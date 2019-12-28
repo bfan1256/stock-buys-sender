@@ -1,0 +1,9 @@
+Dear ${PERSON_NAME}, 
+
+See below the buy Signals Under $20:
+
+${STOCKS}
+
+Yours Truly,
+
+Brandon Fan
