@@ -1,5 +1,5 @@
 import csv
-from algo_yf import buy_signal
+import algo_yf as algo
 import timeit
 from email_sender import send_email
 from tqdm import tqdm
@@ -25,10 +25,12 @@ all_symbols = list(sorted(all_symbols))
 print('Using {0} Symbols'.format(len(all_symbols)))
 
 buys = []
+print('Downloading Stock Data')
+data = algo.download_yf_data(all_symbols)
 
 for symbol in tqdm(all_symbols):
     try:
-        if (buy_signal(symbol, under_value=20)):
+        if (buy_signal(data[symbol], under_value=20)):
             buys.append(symbol)
     except Exception: 
         continue

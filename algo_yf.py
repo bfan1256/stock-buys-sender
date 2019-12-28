@@ -12,12 +12,16 @@ def buy_signal(symbol, under_value=None):
     signal = over_50 and over_100 and under_150
     return signal
 
-def compute_emas_buy(symbol, under_value=None): 
-    stock_data = yf.Ticker(symbol)
+def download_yf_data(symbols):
+    symbol_string = ' '.join(symbols)
+    data = yf.download(symbol_string, period='1y', actions=False, group_by='ticker', threads=False)
+    return data
+
+def compute_emas_buy(stock, under_value=None): 
     if under_value is not None:
-        if stock_data.info['previousClose'] > under_value:
+        if stock['Close'] > under_value:
             return False
-    closing_data = stock_data.history(period='1y', actions=False)
+    closing_data = stock
     closing_data['EMA_50'] = _calculate_ema(closing_data)['Close']
     closing_data['EMA_100'] = _calculate_ema(closing_data, span=100)['Close']
     closing_data['EMA_150'] = _calculate_ema(closing_data, span=150)['Close']
