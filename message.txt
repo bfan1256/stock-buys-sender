@@ -1,6 +1,6 @@
 Dear ${PERSON_NAME}, 
 
-See below the buy Signals Under $20:
+See below the buy Signals Under $$10:
 
 ${STOCKS}
 

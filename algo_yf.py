@@ -1,27 +1,27 @@
 import yfinance as yf
 
 def buy_signal(symbol, under_value=None): 
-        
     closing_data = compute_emas_buy(symbol, under_value=under_value)
-    if closing_data is False:
+    if closing_data is not False:
+        today = closing_data.iloc[-1]
+        over_50 = today['Close'] > today['EMA_50']
+        over_100 = today['EMA_50'] > today['EMA_100']
+        under_150 = today['EMA_100'] < today['EMA_150']
+        signal = over_50 and over_100 and under_150
+        return signal
+    else:
         return False
-    today = closing_data.iloc[-1]
-    over_50 = today['Close'] > today['EMA_50']
-    over_100 = today['EMA_50'] > today['EMA_100']
-    under_150 = today['EMA_100'] < today['EMA_150']
-    signal = over_50 and over_100 and under_150
-    return signal
 
 def download_yf_data(symbols):
     symbol_string = ' '.join(symbols)
-    data = yf.download(symbol_string, period='1y', actions=False, group_by='ticker', threads=False)
+    data = yf.download(symbol_string, period='1y', actions=False, group_by='ticker', threads=True)
     return data
 
 def compute_emas_buy(stock, under_value=None): 
     if under_value is not None:
-        if stock['Close'] > under_value:
+        if stock['Close'].iloc[-1] > under_value:
             return False
-    closing_data = stock
+    closing_data = stock.copy()
     closing_data['EMA_50'] = _calculate_ema(closing_data)['Close']
     closing_data['EMA_100'] = _calculate_ema(closing_data, span=100)['Close']
     closing_data['EMA_150'] = _calculate_ema(closing_data, span=150)['Close']
@@ -41,6 +41,14 @@ def compute_emas_sell(symbol):
 def _calculate_ema(stock_data, span=50):
     ewm = stock_data.ewm(span=span, min_periods=0, adjust=False, ignore_na=False).mean()
     return ewm
+
+def get_stock_info(symbol):
+    stock_data = yf.Ticker(symbol)
+    try:
+        info = stock_data.info
+    except Exception:
+        return ['', '', None, None, None]
+    return [info['longBusinessSummary'], info['sector'], info['forwardEps'], info['forwardPE'], info['priceToBook']]
 
 
 def sell_signal(symbol): 
