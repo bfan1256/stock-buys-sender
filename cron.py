@@ -106,8 +106,8 @@ class CronSchedule:
     in which a `Cron` object should run its task:
     """
     def __init__(
-        self, mins=xrange(60), hours=xrange(24), days=xrange(32),
-            months=xrange(1, 13), weekdays=xrange(8)):
+        self, mins=range(60), hours=range(24), days=range(32),
+            months=range(1, 13), weekdays=range(8)):
         """Constructor
         Initialize a new `CronSchedule` object with the following parameters:
         

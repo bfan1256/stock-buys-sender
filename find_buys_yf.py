@@ -1,6 +1,7 @@
 import csv
 import cron
 import algo_yf as algo
+import uuid
 import pickle
 from email_sender import send_email
 from tqdm import tqdm
@@ -59,8 +60,7 @@ def main():
         print('No buys were found today...')
 
 if __name__ == "__main__":
-    s = cron.CronSchedule()
-    s.weekdays = [0]
+    s = cron.CronSchedule(mins=[], hours=[], days=[], months=[], weekdays=[0])
     c = cron.Cron(s)
     c.set_action(main)
     c.run()
