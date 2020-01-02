@@ -49,7 +49,7 @@ def main():
             rows.append(row)
         new_id = uuid.uuid1()
         file_name = './runs/{0}.csv'.format(new_id)
-        with open(file_name, 'w', encoding='utf-8') as f:
+        with open(file_name, 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(rows)
             f.close()
