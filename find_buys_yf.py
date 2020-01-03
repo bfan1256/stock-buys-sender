@@ -18,6 +18,9 @@ def read_exchange(file):
 
 
 def main():
+    name = input('Name: ')
+    email = input('Email to send to: ')
+    stock_price = int(input('Stock Price Under: '))
     exchanges = ['./exchanges/nasdaq.csv', './exchanges/nyse.csv']
     all_symbols = []
     print('Reading Exchange Data')
@@ -35,7 +38,7 @@ def main():
         f.close()
     for symbol in tqdm(all_symbols):
         try:
-            if (algo.buy_signal(data[symbol], under_value=10)):
+            if (algo.buy_signal(data[symbol], under_value=stock_price)):
                 buys.append(symbol)
         except Exception as e:
             continue
@@ -53,8 +56,8 @@ def main():
             writer = csv.writer(f)
             writer.writerows(rows)
             f.close()
-        print('Sending Email to brandonfan1256@gmail.com...')
-        send_email('brandonfan1256@gmail.com', 'Brandon', buys, file_name)
+        print('Sending Email to {}...'.format(email))
+        send_email(email, name, buys, file_name, stock_price)
     else:
         print('No buys were found today...')
 

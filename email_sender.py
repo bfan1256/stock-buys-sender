@@ -19,14 +19,14 @@ def read_template(filename):
         template_file_content = template_file.read()
     return Template(template_file_content)
 
-def send_email(address, name, stocks, file_name):
+def send_email(address, name, stocks, file_name, under_price):
     s = create_email_connection()
     message_template = read_template('message.txt')
     msg = MIMEMultipart()
     message = message_template.substitute(PERSON_NAME=name.title(), STOCKS='\n'.join(stocks))
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = address
-    msg['Subject'] = 'Stocks Under $10 with EMA Growth Buy Signal'
+    msg['Subject'] = 'Stocks Under ${} with EMA Growth Buy Signal'.format(under_price)
     attachment = open(file_name, "rb") 
   
     # instance of MIMEBase and named as p 
