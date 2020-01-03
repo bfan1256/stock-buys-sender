@@ -21,6 +21,7 @@ def main():
     name = input('Name: ')
     email = input('Email to send to: ')
     stock_price = int(input('Stock Price Under: '))
+    multithread = bool(input('Multithread (True/False): '))
     exchanges = ['./exchanges/nasdaq.csv', './exchanges/nyse.csv']
     all_symbols = []
     print('Reading Exchange Data')
@@ -32,7 +33,7 @@ def main():
 
     buys = []
     print('Downloading Stock Data')
-    data = algo.download_yf_data(all_symbols)
+    data = algo.download_yf_data(all_symbols, multithread=multithread)
     with open('yahoo-data.p', 'wb') as f:
         pickle.dump(data, f)
         f.close()

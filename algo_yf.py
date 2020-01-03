@@ -12,9 +12,9 @@ def buy_signal(symbol, under_value=None):
     else:
         return False
 
-def download_yf_data(symbols):
+def download_yf_data(symbols, multithread=True):
     symbol_string = ' '.join(symbols)
-    data = yf.download(symbol_string, period='1y', actions=False, group_by='ticker', threads=True)
+    data = yf.download(symbol_string, period='1y', actions=False, group_by='ticker', threads=multithread)
     return data
 
 def compute_emas_buy(stock, under_value=None): 
